@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Scanner;
@@ -16,7 +17,7 @@ public class SKZblogImageDownloader {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter URL: ");
         String url = scanner.nextLine();
-        scanner.close(); // リソースリークを防ぐためにスキャナを閉じます
+        scanner.close(); 
 
         try {
             String saveFolder = createFolderNameFromUrl(url);
@@ -31,14 +32,18 @@ public class SKZblogImageDownloader {
         Element yearElement = doc.selectFirst("div.ym-inner span.ym-year");
         Element monthElement = doc.selectFirst("div.ym-inner span.ym-month");
         Element dateElement = doc.selectFirst("div.ym-inner p.date.wf-a");
+        Element nameElement = doc.selectFirst("dl.prof dt.name");
+        Element titleElement = doc.selectFirst("div.inner.title-wrap h1.title");
 
-        if (yearElement != null && monthElement != null && dateElement != null) {
+        if (yearElement != null && monthElement != null && dateElement != null && nameElement != null && titleElement != null) {
             String year = yearElement.text();
             String month = monthElement.text();
             String date = dateElement.text();
-            return "./" + year + "." + month + "." + date;
+            String name = nameElement.ownText();
+            String title = titleElement.text();
+            return "./save-images/" + year + "." + month + "." + date + "-" + name + "「" + title + "」";
         } else {
-            throw new IOException("日付情報が見つかりませんでした。");
+            throw new IOException("情報が見つかりません");
         }
     }
 
