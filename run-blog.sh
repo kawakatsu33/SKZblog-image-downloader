@@ -1,0 +1,1 @@
+java -cp .:./lib/jsoup-1.17.2.jar:./lib/commons-io-2.8.0.jar SKZblogImageDownloader      
